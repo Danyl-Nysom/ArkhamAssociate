@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Arkham Associate</string>
+    <string name="title_section_play">Play</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_arkham_game_select">ArkhamGameSelectActivity</string>
+
+</resources>
