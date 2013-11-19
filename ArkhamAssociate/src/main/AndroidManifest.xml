@@ -23,13 +23,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.danylnysom.arkhamassociate.ArkhamGameSelectActivity"
-            android:label="@string/title_activity_arkham_game_select"
-            android:parentActivityName="com.danylnysom.arkhamassociate.ArkhamMainActivity">
+            android:name="com.danylnysom.arkhamassociate.ViewPlayerActivity"
+            android:label="@string/title_activity_view_player"
+            android:parentActivityName="com.danylnysom.arkhamassociate.ViewPlayerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.danylnysom.arkhamassociate.ArkhamMainActivity" />
         </activity>
+
+        <provider
+            android:name="com.danylnysom.arkhamassociate.db.ArkhamProvider"
+            android:authorities="com.danylnysom.arkhamassociate.db.ArkhamProvider" />
     </application>
 
 </manifest>
