@@ -90,6 +90,8 @@ public class ViewPlayerActivity extends FragmentActivity implements ActionBar.Ta
         investigator = resolver.query(ArkhamProvider.INVESTIGATORS_URI, null,
                 DBHelper.COL_NAME + " = ?", investigatorName, null);
         investigator.moveToFirst();
+
+        getActionBar().setTitle(player.getString(player.getColumnIndex(DBHelper.COL_NAME)));
     }
 
 

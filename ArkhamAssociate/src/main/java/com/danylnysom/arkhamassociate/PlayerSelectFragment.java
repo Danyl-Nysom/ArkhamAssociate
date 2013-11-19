@@ -163,12 +163,18 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
+            String playerName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME));
+            String investigatorName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_INVESTIGATOR));
             LinearLayout itemView = (LinearLayout) view;
             TextView mainText = (TextView) itemView.getChildAt(0);
             TextView subText = (TextView) itemView.getChildAt(1);
 
-            mainText.setText(cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME)));
-            subText.setText(cursor.getString(cursor.getColumnIndex(DBHelper.COL_INVESTIGATOR)));
+            mainText.setText(playerName);
+            subText.setText(investigatorName);
+
+            itemView.setOnClickListener(new PlayerClickListener(
+                    cursor.getInt(cursor.getColumnIndex(DBHelper.COL_KEY)), playerName, playersUri,
+                    cursor.getString(cursor.getColumnIndex(DBHelper.COL_INVESTIGATOR)) != null));
         }
     }
 }
