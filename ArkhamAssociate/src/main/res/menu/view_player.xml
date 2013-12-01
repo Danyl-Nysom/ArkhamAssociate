@@ -1,2 +1,8 @@
-<menu xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ViewPlayerActivity"></menu>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ViewPlayerActivity">
+    <item
+        android:id="@+id/action_change_investigator"
+        android:title="Change Investigator"
+        android:showAsAction="withText|ifRoom" />
+</menu>

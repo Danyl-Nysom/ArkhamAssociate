@@ -135,28 +135,20 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
         }
 
         @Override
-        public View newView(final Context context, Cursor cursor, ViewGroup parent) {
-            String playerName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME));
-            String investigatorName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_INVESTIGATOR));
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
             LinearLayout itemView = new LinearLayout(context);
-            TextView mainText = new TextView(context);
-            TextView subText = new TextView(context);
-
-            mainText.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Large);
-            mainText.setText(playerName);
-            itemView.addView(mainText, 0);
-
-            subText.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Small);
-            subText.setText(investigatorName);
-            itemView.addView(subText, 1);
-
             itemView.setOrientation(LinearLayout.VERTICAL);
             itemView.setMinimumHeight(200);
 
+            TextView mainText = new TextView(context);
+            mainText.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Large);
+            itemView.addView(mainText, 0);
 
-            itemView.setOnClickListener(new PlayerClickListener(
-                    cursor.getInt(cursor.getColumnIndex(DBHelper.COL_KEY)), playerName, playersUri,
-                    cursor.getString(cursor.getColumnIndex(DBHelper.COL_INVESTIGATOR)) != null));
+            TextView subText = new TextView(context);
+            subText.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Small);
+            itemView.addView(subText, 1);
+
+            bindView(itemView, context, cursor);
 
             return itemView;
         }
@@ -173,7 +165,7 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
             subText.setText(investigatorName);
 
             itemView.setOnClickListener(new PlayerClickListener(
-                    cursor.getInt(cursor.getColumnIndex(DBHelper.COL_KEY)), playerName, playersUri,
+                    cursor.getInt(cursor.getColumnIndex(DBHelper.COL_KEY)), playersUri,
                     cursor.getString(cursor.getColumnIndex(DBHelper.COL_INVESTIGATOR)) != null));
         }
     }

@@ -10,8 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
-;
-
 public class ArkhamMainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 

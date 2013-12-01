@@ -111,8 +111,9 @@ public class ArkhamProvider extends ContentProvider {
         SQLiteDatabase database = db.getWritableDatabase();
         switch (uriMatcher.match(uri)) {
             case GAMES:
-                database.execSQL("INSERT INTO " + DBHelper.GAME_TABLE + " VALUES(NULL, NULL, '" +
-                        values.getAsString(DBHelper.COL_NAME) + "', " + values.getAsLong(DBHelper.COL_CREATION) + ")");
+                database.insert(DBHelper.GAME_TABLE, null, values);
+//                database.execSQL("INSERT INTO " + DBHelper.GAME_TABLE + " VALUES(NULL, NULL, '" +
+                //                      values.getAsString(DBHelper.COL_NAME) + "', " + values.getAsLong(DBHelper.COL_CREATION) + ")");
                 break;
             case PLAYERS:
                 if (values.containsKey(DBHelper.COL_INVESTIGATOR)) {
@@ -121,15 +122,18 @@ public class ArkhamProvider extends ContentProvider {
                     Cursor investigator = database.query(
                             DBHelper.INVESTIGATOR_TABLE, columns, DBHelper.COL_KEY + " = ?", playersIdParams, null, null, null, null);
                     investigator.moveToFirst();
+                    values.put(DBHelper.COL_STATS, investigator.getInt(investigator.getColumnIndex(DBHelper.COL_STATS)));
+                    values.put(DBHelper.COL_CLUES, investigator.getInt(investigator.getColumnIndex(DBHelper.COL_CLUES)));
 
                     database.execSQL("INSERT INTO " + DBHelper.PLAYER_TABLE + " VALUES(NULL, NULL, '" +
                             values.getAsString(DBHelper.COL_NAME) + "', " + investigator.getInt(investigator.getColumnIndex(DBHelper.COL_STATS)) + ", " +
                             values.getAsInteger(DBHelper.COL_GAME) + ", '" + values.getAsString(DBHelper.COL_INVESTIGATOR) + "');");
                     investigator.close();
-                } else {
-                    database.execSQL("INSERT INTO " + DBHelper.PLAYER_TABLE + " VALUES(NULL, NULL, '" +
-                            values.getAsString(DBHelper.COL_NAME) + "', 0, " + values.getAsInteger(DBHelper.COL_GAME) + ", NULL);");
                 }
+                //   database.execSQL("INSERT INTO " + DBHelper.PLAYER_TABLE + " VALUES(NULL, NULL, '" +
+                //         values.getAsString(DBHelper.COL_NAME) + "', 0, " + values.getAsInteger(DBHelper.COL_GAME) + ", NULL);");
+                //}
+                database.insert(DBHelper.PLAYER_TABLE, null, values);
                 break;
             case INVESTIGATORS:
                 break;

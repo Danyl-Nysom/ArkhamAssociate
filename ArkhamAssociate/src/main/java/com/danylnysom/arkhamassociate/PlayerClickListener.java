@@ -14,39 +14,32 @@ import android.view.View;
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
 import com.danylnysom.arkhamassociate.db.DBHelper;
 
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * Created by Dylan on 17/11/13.
  */
-public class PlayerClickListener implements View.OnClickListener {
+public class PlayerClickListener implements View.OnClickListener, PlayerStats {
     private int key;
     private Uri playersUri;
     private static final String[] PROJECTION = {DBHelper.COL_NAME, DBHelper.COL_STATS};
     private Context context;
     boolean hasInvestigator;
-    private String playerName;
 
     private int selectedIndex = 1;
     private Cursor cursor;
 
-    public PlayerClickListener(int key, String playerName, Uri playersUri, boolean hasInvestigator) {
+    public PlayerClickListener(int key, Uri playersUri, boolean hasInvestigator) {
         this.key = key;
         this.playersUri = playersUri;
         this.hasInvestigator = hasInvestigator;
-        this.playerName = playerName;
     }
 
     @Override
     public void onClick(View v) {
         context = v.getContext();
         if (hasInvestigator) {
-            Intent intent = new Intent(context, ViewPlayerActivity.class);
-            intent.putExtra(ViewPlayerActivity.ARG_KEY, key);
-            intent.putExtra(ViewPlayerActivity.ARG_URI, playersUri.toString());
-            context.startActivity(intent);
+            openPlayerViewer();
         } else {
             cursor = context.getContentResolver().query(ArkhamProvider.INVESTIGATORS_URI, PROJECTION,
                     null, null, DBHelper.COL_KEY);
@@ -65,6 +58,7 @@ public class PlayerClickListener implements View.OnClickListener {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     addInvestigatorToPlayer();
+                    openPlayerViewer();
                 }
             });
 
@@ -73,6 +67,7 @@ public class PlayerClickListener implements View.OnClickListener {
                 public void onClick(DialogInterface dialog, int which) {
                     selectedIndex = new Random().nextInt(new DBHelper(context).getInvestigatorCount());
                     addInvestigatorToPlayer();
+                    openPlayerViewer();
                 }
             });
 
@@ -92,13 +87,28 @@ public class PlayerClickListener implements View.OnClickListener {
 
         ContentValues values = new ContentValues();
         String investigatorName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME));
-        values.put(DBHelper.COL_INVESTIGATOR, investigatorName);
-        values.put(DBHelper.COL_STATS, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_STATS)));
+        int stats = cursor.getInt(cursor.getColumnIndex(DBHelper.COL_STATS));
+        int sneak = (stats >> SNEAK_SHIFT) & STAT_MASK;
+        int will = (stats >> WILL_SHIFT) & STAT_MASK;
+        int luck = (stats >> LUCK_SHIFT) & STAT_MASK;
 
-        Set<Map.Entry<String, Object>> contents = values.valueSet();
+        stats ^= (sneak << SNEAK_SHIFT) + (will << WILL_SHIFT) + (luck << LUCK_SHIFT);
+        stats |= (sneak - 3 << SNEAK_SHIFT) + (will - 3 << WILL_SHIFT) + (luck - 3 << LUCK_SHIFT);
+
+        values.put(DBHelper.COL_INVESTIGATOR, investigatorName);
+        values.put(DBHelper.COL_STATS, stats);
+        values.put(DBHelper.COL_CLUES, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_CLUES)));
+        values.put(DBHelper.COL_MONEY, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_MONEY)));
+        values.put(DBHelper.COL_BLESSED, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_BLESSED)));
 
         resolver.update(ContentUris.withAppendedId(playersUri, key), values, null, null);
         cursor.close();
-        hasInvestigator = true;
+    }
+
+    private void openPlayerViewer() {
+        Intent intent = new Intent(context, ViewPlayerActivity.class);
+        intent.putExtra(ViewPlayerActivity.ARG_KEY, key);
+        intent.putExtra(ViewPlayerActivity.ARG_URI, playersUri.toString());
+        context.startActivity(intent);
     }
 }

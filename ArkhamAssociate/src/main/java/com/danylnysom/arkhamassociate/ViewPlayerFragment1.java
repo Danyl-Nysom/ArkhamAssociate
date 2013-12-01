@@ -31,14 +31,13 @@ public class ViewPlayerFragment1 extends Fragment {
                 .replace("|", "\n");
         String posRandom = investigator.getString(investigator.getColumnIndex(DBHelper.COL_POSSESSIONS_RANDOM))
                 .replace("|", "\n");
-        String story = investigator.getString(investigator.getColumnIndex(DBHelper.COL_ABILITY));
+        String story = investigator.getString(investigator.getColumnIndex(DBHelper.COL_STORY));
 
         ((TextView) rootView.findViewById(R.id.investigatorName)).setText(name);
         ((TextView) rootView.findViewById(R.id.home)).setText(home);
         ((TextView) rootView.findViewById(R.id.ability)).setText(ability);
         ((TextView) rootView.findViewById(R.id.posFixed)).setText(posFixed);
         ((TextView) rootView.findViewById(R.id.posRandom)).setText(posRandom);
-        ((TextView) rootView.findViewById(R.id.story)).setText(story);
 
         return rootView;
     }
