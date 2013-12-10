@@ -1,4 +1,4 @@
-package com.danylnysom.arkhamassociate;
+package com.danylnysom.arkhamassociate.playerview;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.DBHelper;
 
-/**
- * Created by Dylan on 18/11/13.
- */
-public class ViewPlayerFragment1 extends Fragment {
-    private Cursor investigator;
+class ViewPlayerFragment1 extends Fragment {
+    private final Cursor investigator;
 
     public ViewPlayerFragment1(Cursor investigator) {
         this.investigator = investigator;
@@ -31,7 +29,6 @@ public class ViewPlayerFragment1 extends Fragment {
                 .replace("|", "\n");
         String posRandom = investigator.getString(investigator.getColumnIndex(DBHelper.COL_POSSESSIONS_RANDOM))
                 .replace("|", "\n");
-        String story = investigator.getString(investigator.getColumnIndex(DBHelper.COL_STORY));
 
         ((TextView) rootView.findViewById(R.id.investigatorName)).setText(name);
         ((TextView) rootView.findViewById(R.id.home)).setText(home);

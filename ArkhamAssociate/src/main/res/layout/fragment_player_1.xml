@@ -49,14 +49,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ability"
             android:textAppearance="@android:style/TextAppearance.Medium"
-            android:text="Fixed Possesions:" />
+            android:text="Fixed Possessions:" />
 
         <TextView
             android:id="@+id/posFixed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/posFixedLabel"
-            android:text="Possesions..." />
+            android:text="Possessions..." />
 
         <TextView
             android:id="@+id/posRandomLabel"
@@ -65,13 +65,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/posFixed"
             android:textAppearance="@android:style/TextAppearance.Medium"
-            android:text="Random Possesions:" />
+            android:text="Random Possessions:" />
 
         <TextView
             android:id="@+id/posRandom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/posRandomLabel"
-            android:text="Possesions..." />
+            android:text="Possessions..." />
     </RelativeLayout>
 </ScrollView>

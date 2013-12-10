@@ -11,21 +11,20 @@ import android.net.Uri;
 import java.util.List;
 
 /**
- * Created by Dylan on 17/11/13.
+ * ContentProvider for ArkhamAssociate games, players, and investigators.
  */
 public class ArkhamProvider extends ContentProvider {
     private DBHelper db;
-    public static final String AUTHORITY = "com.danylnysom.arkhamassociate.db.ArkhamProvider";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    private static final String AUTHORITY = "com.danylnysom.arkhamassociate.db.ArkhamProvider";
     public static final Uri GAMES_URI = Uri.parse("content://" + AUTHORITY + "/games");
     public static final Uri INVESTIGATORS_URI = Uri.parse("content://" + AUTHORITY + "/investigators");
 
-    public static final String INVESTIGATOR_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "investigator";
-    public static final String INVESTIGATORS_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "investigator";
-    public static final String GAME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "game";
-    public static final String GAMES_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "game";
-    public static final String PLAYER_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "player";
-    public static final String PLAYERS_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "player";
+    private static final String INVESTIGATOR_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "investigator";
+    private static final String INVESTIGATORS_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "investigator";
+    private static final String GAME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "game";
+    private static final String GAMES_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "game";
+    private static final String PLAYER_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "player";
+    private static final String PLAYERS_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "player";
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int INVESTIGATORS = 1;
@@ -35,6 +34,11 @@ public class ArkhamProvider extends ContentProvider {
     private static final int PLAYERS = 5;
     private static final int PLAYERS_ID = 6;
 
+    /**
+     * Adds URIs to the UriMatcher.
+     *
+     * @return true, always
+     */
     @Override
     public boolean onCreate() {
         db = new DBHelper(getContext());
@@ -130,9 +134,6 @@ public class ArkhamProvider extends ContentProvider {
                             values.getAsInteger(DBHelper.COL_GAME) + ", '" + values.getAsString(DBHelper.COL_INVESTIGATOR) + "');");
                     investigator.close();
                 }
-                //   database.execSQL("INSERT INTO " + DBHelper.PLAYER_TABLE + " VALUES(NULL, NULL, '" +
-                //         values.getAsString(DBHelper.COL_NAME) + "', 0, " + values.getAsInteger(DBHelper.COL_GAME) + ", NULL);");
-                //}
                 database.insert(DBHelper.PLAYER_TABLE, null, values);
                 break;
             case INVESTIGATORS:

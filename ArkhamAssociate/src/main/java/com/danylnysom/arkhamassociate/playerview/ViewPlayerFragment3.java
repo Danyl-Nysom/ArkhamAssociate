@@ -1,4 +1,4 @@
-package com.danylnysom.arkhamassociate;
+package com.danylnysom.arkhamassociate.playerview;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.DBHelper;
 
-/**
- * Created by Dylan on 18/11/13.
- */
-public class ViewPlayerFragment3 extends Fragment {
-    private Cursor investigator;
+class ViewPlayerFragment3 extends Fragment {
+    private final Cursor investigator;
 
     public ViewPlayerFragment3(Cursor investigator) {
         this.investigator = investigator;

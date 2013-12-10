@@ -1,4 +1,4 @@
-package com.danylnysom.arkhamassociate;
+package com.danylnysom.arkhamassociate.playerview;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -15,15 +15,14 @@ import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
 import com.danylnysom.arkhamassociate.db.DBHelper;
+import com.danylnysom.arkhamassociate.db.PlayerStats;
 
-/**
- * Created by Dylan on 18/11/13.
- */
-public class ViewPlayerFragment2 extends Fragment implements PlayerStats {
-    private Cursor investigator;
-    private Cursor player;
+class ViewPlayerFragment2 extends Fragment implements PlayerStats {
+    private final Cursor investigator;
+    private final Cursor player;
 
     private CheckBox blessed;
     private CheckBox cursed;

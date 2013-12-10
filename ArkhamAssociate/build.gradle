@@ -2,6 +2,7 @@ buildscript {
     repositories {
         mavenCentral()
     }
+    //noinspection GroovyAssignabilityCheck
     dependencies {
         classpath 'com.android.tools.build:gradle:0.6.+'
     }
@@ -38,7 +39,7 @@ android {
     }
 }
 
+//noinspection GroovyAssignabilityCheck
 dependencies {
-    compile 'com.android.support:support-v4:18.0.0'
-    compile 'com.android.support:support-v13:+'
+    compile files('lib/android-support-v4.jar')
 }

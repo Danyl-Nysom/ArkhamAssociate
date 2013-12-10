@@ -1,7 +1,7 @@
-package com.danylnysom.arkhamassociate;
+package com.danylnysom.arkhamassociate.db;
 
 /**
- * Created by Dylan on 18/11/13.
+ * Constants relating to the storage of individual player stats in a single integer
  */
 public interface PlayerStats {
 
@@ -16,6 +16,4 @@ public interface PlayerStats {
     public static final int FOCUS_SHIFT = LUCK_SHIFT + 3;
 
     public static final int STAT_MASK = 0b111;
-    public static final int SKILL_MASK = 0b111;
-    public static final int FOCUS_MASK = 0b11;
 }

@@ -1,4 +1,4 @@
-package com.danylnysom.arkhamassociate;
+package com.danylnysom.arkhamassociate.playerview;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,21 +11,17 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
+import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
 import com.danylnysom.arkhamassociate.db.DBHelper;
 
-/**
- * Created by Dylan on 22/11/13.
- */
-public class ChangeValueFragment extends DialogFragment {
+class ChangeValueFragment extends DialogFragment {
     public static final String VIEW_ID_ARG = "view_id";
     public static final String PLAYER_KEY_ARG = "player";
     public static final String GAME_KEY_ARG = "game";
 
     public static final String MONEY_ARG = "money";
 
-    private int playerKey;
-    private int gameKey;
     private ContentValues values;
     private String title;
 

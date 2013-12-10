@@ -1,14 +1,15 @@
-package com.danylnysom.arkhamassociate;
+package com.danylnysom.arkhamassociate.main;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
-import android.view.MenuItem;
+
+import com.danylnysom.arkhamassociate.R;
+import com.danylnysom.arkhamassociate.gameselect.GameSelectFragment;
 
 public class ArkhamMainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -41,9 +42,7 @@ public class ArkhamMainActivity extends Activity
 
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
-        Class targetClass;
         FragmentManager fragmentManager = getFragmentManager();
-        final Context appContext = this.getApplicationContext();
         switch (position) {
             case SECTION_PLAY:
                 FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -61,7 +60,7 @@ public class ArkhamMainActivity extends Activity
         }
     }
 
-    public void restoreActionBar() {
+    void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -81,14 +80,4 @@ public class ArkhamMainActivity extends Activity
         }
         return super.onCreateOptionsMenu(menu);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
-    }
-
 }

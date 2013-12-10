@@ -12,9 +12,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:supportsRtl="true">
         <activity
-            android:name="com.danylnysom.arkhamassociate.ArkhamMainActivity"
+            android:name=".main.ArkhamMainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.danylnysom.arkhamassociate.ViewPlayerActivity"
+            android:name=".playerview.ViewPlayerActivity"
             android:label="@string/title_activity_view_player"
             android:parentActivityName="com.danylnysom.arkhamassociate.ViewPlayerActivity">
             <meta-data

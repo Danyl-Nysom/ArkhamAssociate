@@ -5,17 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.danylnysom.arkhamassociate.PlayerStats;
-
-/**
- * Created by Dylan on 16/11/13.
- */
 public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
-    private Context context;
-
-    private static final String[] INVESTIGATOR_FILES = {
-            "base.investigators"
-    };
 
     private static final String DB_NAME = "arkhamdb";
 
@@ -23,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
     public static final String GAME_TABLE = "games";
     public static final String INVESTIGATOR_TABLE = "investigators";
 
-    public static final String COL_ID = "_id";
+    private static final String COL_ID = "_id";
     public static final String COL_KEY = "key";
     public static final String COL_NAME = "name";
     public static final String COL_CREATION = "creation";
@@ -43,7 +33,6 @@ public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
-        this.context = context;
     }
 
     @Override
@@ -106,7 +95,7 @@ public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
                         9, 0, 0,
                         "Shrewd Dealer - Any Phase: Whenever Bob draws one or more cards from the Common item deck, he draws one extra card and then discards one of the cards.",
                         "As a traveling salesman, Bob is always on the go. But yesterday, he saw something that made him decide to stay in Arkham and miss his train. While he was in the General Store selling his wares, a robed man came in and bought several items, paying with old gold coins. Astounded, Bob turned to the shopkeeper for an explanation, but the man just ignored his questions, simply saying, \"That happens, sometimes.\"\n" +
-                                "Now, Bob isn't leaving until he figues out where those gold coins came from. If he plays his cards right, maybe this will be the big score. Maybe he'll finally be able to retire and buy that boat he's had his eye on and spend the rest of his days fishing in a tropical paradise. Then again, moybe Bob will finally come to see that all that glitters is not gold.",
+                                "Now, Bob isn't leaving until he figures out where those gold coins came from. If he plays his cards right, maybe this will be the big score. Maybe he'll finally be able to retire and buy that boat he's had his eye on and spend the rest of his days fishing in a tropical paradise. Then again, maybe Bob will finally come to see that all that glitters is not gold.",
                         db);
                 addInvestigator("Carolyn Fern, the Psychologist", "Arkham Asylum", 6, 4, 3, 3, 4, 4, 5, 5, 2,
                         "$7|1 Clue token", "2 Unique items|2 Common items|1 Skill",
@@ -134,7 +123,7 @@ public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
                         7, 2, 0,
                         "Psychic Sensitivity - Other World Encounter: When drawing gate encounters in Other Worlds, Gloria draws two cards that match the color of one of the Other World's encounter symbols, then chooses whichever one of the two she wants. This ability does not work when drawing location encounters in Arkham.",
                         "As a young girl, Gloria was haunted by terrible visions. After years of visiting doctors and some therapy, she learned to control her visions somewhat by writing stories. Her weird and disturbing fiction somehow spoke to the public in these troubled times, and has made her a bestselling writer.\n" +
-                                "This evening, while leaving a book signing she's attending in Arkham, she was knocked to the ground by the most powerful vision she's ever experienced. Gloria saw the sky tear open, and a huge and montrous form pour out of the very air itself, wreaking untold havoc and killing thousands. As she sat on the ground with her arms wrapped around herself, Gloria knew, somehow, that this vision was real, and that it would come to pass unless she did something about it.\n" +
+                                "This evening, while leaving a book signing she's attending in Arkham, she was knocked to the ground by the most powerful vision she's ever experienced. Gloria saw the sky tear open, and a huge and monstrous form pour out of the very air itself, wreaking untold havoc and killing thousands. As she sat on the ground with her arms wrapped around herself, Gloria knew, somehow, that this vision was real, and that it would come to pass unless she did something about it.\n" +
                                 "Now, she finds herself in a run-down diner, sipping coffee and trying to decide what to do.",
                         db);
                 addInvestigator("Harvey Walters, the Professor", "Administration Building", 7, 3, 3, 5, 3, 3, 6, 4, 2,
@@ -148,7 +137,7 @@ public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
                         "$10", "2 Common items|1 Unique item|1 Spell|1 Skill",
                         10, 0, 0,
                         "Trust Fund - Upkeep: Jenny gains $1.",
-                        "Several months ago, Jenny was visiting Paris when she received a letter from her sister, Isabelle. In it, Isabelle rambled incoherantly, writing about men in dark cloaks following her wherever she went, and of hoofprints in the woods, left by an enormous goat. The outside of the envelope was partailly stained with blood, and it was mailed from Arkham. That was the last letter from Isabelle she received.\n" +
+                        "Several months ago, Jenny was visiting Paris when she received a letter from her sister, Isabelle. In it, Isabelle rambled incoherently, writing about men in dark cloaks following her wherever she went, and of hoof prints in the woods, left by an enormous goat. The outside of the envelope was partially stained with blood, and it was mailed from Arkham. That was the last letter from Isabelle she received.\n" +
                                 "Jenny has since returned to the States, coming to Arkham to find her missing sister. Stepping off the train from Boston into the dark autumn night, she believes that her sister was abducted by a strange cult, and is determined to find her and thwart the plans of those that took her... even if she has to save all of Arkham in the process.",
                         db);
                 addInvestigator("Joe Diamond, the Private Eye", "Police Station", 4, 6, 6, 4, 5, 3, 3, 3, 3,
@@ -172,7 +161,7 @@ public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
                         6, 4, 0,
                         "Research - Any Phase: Once per turn, Mandy can activate this ability after any investigator (including herself) makes a skill check. That investigator then re-rolls all of the dice rolled for that check that did not result in successes.",
                         "Mandy came to Arkham several years ago looking for work as a researcher for Miskatonic University. Since then, she has worked with many of the University professors, delving into esoteric tomes filled with scientific information, historical reports, and sometimes even occult ramblings.\n" +
-                                "It was while reading an old book of prophecies last week that she first felt that she had stumbled onto something big. Mandy came to believe that certain signs and portents described in the book were taking place in Arkham right now-- omens that indicated the return of a terrible being reffered to as an Ancient One, which would grind the cities of Man beneath its loathsome tread.\n" +
+                                "It was while reading an old book of prophecies last week that she first felt that she had stumbled onto something big. Mandy came to believe that certain signs and portents described in the book were taking place in Arkham right now-- omens that indicated the return of a terrible being referred to as an Ancient One, which would grind the cities of Man beneath its loathsome tread.\n" +
                                 "Tonight, the full moon has turned blood red, which is the final omen of the return of the Ancient One. Slipping into the night, and armed with her knowledge of the prophecy, Mandy has decided to see if she can defy fate and stop these events from taking place.",
                         db);
                 addInvestigator("Michael McGlen, the Gangster", "Ma's Boarding House", 3, 7, 5, 4, 6, 4, 3, 3, 1,
@@ -215,7 +204,7 @@ public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
                                  int focus, String fixed, String random, int money, int clues,
                                  int blessed,
                                  String ability, String story, SQLiteDatabase db) {
-        int stats = (sanity << SANITY_SHIFT) + (stamina << STAMINA_SHIFT) +
+        @SuppressWarnings("PointlessBitwiseExpression") int stats = (sanity << SANITY_SHIFT) + (stamina << STAMINA_SHIFT) +
                 (speed << SPEED_SHIFT) + (sneak << SNEAK_SHIFT) +
                 (fight << FIGHT_SHIFT) + (will << WILL_SHIFT) +
                 (lore << LORE_SHIFT) + (luck << LUCK_SHIFT) +

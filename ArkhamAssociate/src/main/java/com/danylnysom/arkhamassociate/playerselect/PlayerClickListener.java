@@ -1,4 +1,4 @@
-package com.danylnysom.arkhamassociate;
+package com.danylnysom.arkhamassociate.playerselect;
 
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -13,18 +13,17 @@ import android.view.View;
 
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
 import com.danylnysom.arkhamassociate.db.DBHelper;
+import com.danylnysom.arkhamassociate.db.PlayerStats;
+import com.danylnysom.arkhamassociate.playerview.ViewPlayerActivity;
 
 import java.util.Random;
 
-/**
- * Created by Dylan on 17/11/13.
- */
-public class PlayerClickListener implements View.OnClickListener, PlayerStats {
-    private int key;
-    private Uri playersUri;
+class PlayerClickListener implements View.OnClickListener, PlayerStats {
+    private final int key;
+    private final Uri playersUri;
     private static final String[] PROJECTION = {DBHelper.COL_NAME, DBHelper.COL_STATS};
     private Context context;
-    boolean hasInvestigator;
+    private final boolean hasInvestigator;
 
     private int selectedIndex = 1;
     private Cursor cursor;

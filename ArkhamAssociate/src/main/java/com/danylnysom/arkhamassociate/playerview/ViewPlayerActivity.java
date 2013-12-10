@@ -1,4 +1,4 @@
-package com.danylnysom.arkhamassociate;
+package com.danylnysom.arkhamassociate.playerview;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -21,10 +21,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
 import com.danylnysom.arkhamassociate.db.DBHelper;
+import com.danylnysom.arkhamassociate.db.PlayerStats;
 
-import java.util.Locale;
 import java.util.Random;
 
 public class ViewPlayerActivity extends FragmentActivity
@@ -42,42 +43,18 @@ public class ViewPlayerActivity extends FragmentActivity
     private ViewPlayerPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
 
-    private LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_player);
 
-        mCallbacks = this;
+        LoaderManager.LoaderCallbacks<Cursor> mCallbacks = this;
         LoaderManager lm = getLoaderManager();
         lm.initLoader(LOADER_ID_PLAYER, null, mCallbacks);
         lm.initLoader(LOADER_ID_INVESTIGATOR, null, mCallbacks);
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        //refreshCursors();
-    }
-
-    private void refreshCursors() {
-        if (player != null && !player.isClosed()) {
-            player.close();
-        }
-        if (investigator != null && !investigator.isClosed()) {
-            investigator.close();
-        }
-
-        int playerKey = getIntent().getIntExtra(ARG_KEY, -1);
-        Uri playerUri = Uri.parse(getIntent().getStringExtra(ARG_URI) + "/" + playerKey);
-        ContentResolver resolver = this.getContentResolver();
-        player = resolver.query(playerUri, null, null, null, null);
-        player.moveToFirst();
-
-        String[] investigatorName = {player.getString(player.getColumnIndex(DBHelper.COL_INVESTIGATOR))};
-        investigator = resolver.query(ArkhamProvider.INVESTIGATORS_URI, null,
-                DBHelper.COL_NAME + " = ?", investigatorName, null);
-        investigator.moveToFirst();
     }
 
     @Override
@@ -168,8 +145,6 @@ public class ViewPlayerActivity extends FragmentActivity
 
         resolver.update(playerUri, values, null, null);
         cursor.close();
-//        refreshCursors();
-//        finish();
     }
 
     @Override
@@ -331,7 +306,6 @@ public class ViewPlayerActivity extends FragmentActivity
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
             String title = null;
             switch (position) {
                 case 0:
