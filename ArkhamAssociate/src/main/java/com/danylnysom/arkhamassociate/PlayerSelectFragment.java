@@ -45,10 +45,12 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
     private int gameKey;
     private String gameName;
 
-    public PlayerSelectFragment(int gameKey, String gameName) {
-        this.gameKey = gameKey;
-        this.gameName = gameName;
-        playersUri = Uri.withAppendedPath(ContentUris.withAppendedId(ArkhamProvider.GAMES_URI, gameKey), "players");
+    static public PlayerSelectFragment newInstance(int gameKey, String gameName) {
+        PlayerSelectFragment fragment = new PlayerSelectFragment();
+        fragment.gameKey = gameKey;
+        fragment.gameName = gameName;
+        fragment.playersUri = Uri.withAppendedPath(ContentUris.withAppendedId(ArkhamProvider.GAMES_URI, gameKey), "players");
+        return fragment;
     }
 
     @Override

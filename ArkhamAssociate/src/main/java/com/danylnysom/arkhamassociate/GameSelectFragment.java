@@ -152,7 +152,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
                     FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
                     ft.addToBackStack(null);
-                    ft.replace(R.id.container, new PlayerSelectFragment(gameId, gameName));
+                    ft.replace(R.id.container, PlayerSelectFragment.newInstance(gameId, gameName));
                     ft.commit();
                 }
             });
@@ -178,7 +178,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
                     FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
                     ft.addToBackStack(null);
-                    ft.replace(R.id.container, new PlayerSelectFragment(gameId, gameName));
+                    ft.replace(R.id.container, PlayerSelectFragment.newInstance(gameId, gameName));
                     ft.commit();
                 }
             });
