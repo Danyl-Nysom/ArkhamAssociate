@@ -20,6 +20,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
@@ -83,23 +84,34 @@ public class ViewPlayerActivity extends FragmentActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private int selectedInvestigator;
+
     private void showInvestigatorPicker() {
         final Cursor cursor = getContentResolver().query(ArkhamProvider.INVESTIGATORS_URI, null,//PROJECTION,
                 null, null, DBHelper.COL_KEY);
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Select an Investigator");
-
-        dialog.setSingleChoiceItems(cursor, 0, DBHelper.COL_NAME, new DialogInterface.OnClickListener() {
+        selectedInvestigator = -1;
+        dialog.setSingleChoiceItems(cursor, selectedInvestigator, DBHelper.COL_NAME, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                cursor.moveToPosition(which);
+                selectedInvestigator = which;
             }
         });
 
         dialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                setInvestigator(cursor);
+                if (selectedInvestigator >= 0) {
+                    cursor.moveToPosition(selectedInvestigator);
+                    setInvestigator(cursor);
+                } else {
+                    Toast.makeText(
+                            ((AlertDialog) (dialog)).getContext(),
+                            "No investigator selected; player not modified",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
             }
         });
 
