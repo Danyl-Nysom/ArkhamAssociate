@@ -32,22 +32,29 @@ import java.util.Random;
 public class ViewPlayerActivity extends FragmentActivity
         implements ActionBar.TabListener, PlayerStats, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_ID_PLAYER = 1;
-    private static final int LOADER_ID_INVESTIGATOR = 2;
+    public static final int LOADER_ID_PLAYER = 1;
+    public static final int LOADER_ID_INVESTIGATOR = 2;
 
-    private Cursor player;
-    private Cursor investigator;
+    public Cursor player;
+    public Cursor investigator;
 
     public static final String ARG_KEY = "key";
     public static final String ARG_URI = "uri";
+    public static final String ARG_TAB = "tab";
 
     private ViewPlayerPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
+
+    private int selectedTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_player);
+
+        if (savedInstanceState != null) {
+            selectedTab = savedInstanceState.getInt(ARG_TAB, 0);
+        }
 
         LoaderManager.LoaderCallbacks<Cursor> mCallbacks = this;
         LoaderManager lm = getLoaderManager();
@@ -61,8 +68,19 @@ public class ViewPlayerActivity extends FragmentActivity
     @Override
     public void onStop() {
         super.onStop();
-        player.close();
-        investigator.close();
+        LoaderManager lm = getLoaderManager();
+        lm.destroyLoader(LOADER_ID_INVESTIGATOR);
+        lm.destroyLoader(LOADER_ID_PLAYER);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(ARG_TAB, mViewPager.getCurrentItem());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        selectedTab = savedInstanceState.getInt(ARG_TAB, 0);
     }
 
     @Override
@@ -157,11 +175,27 @@ public class ViewPlayerActivity extends FragmentActivity
 
         resolver.update(playerUri, values, null, null);
         cursor.close();
+
+        // Restart the activity
+//        Intent intent = new Intent(this, ViewPlayerActivity.class);
+//        Bundle extras = getIntent().getExtras();
+//        extras.putInt(ARG_TAB, mViewPager.getCurrentItem());
+//        intent.putExtras(extras);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        finish();
+//        startActivity(intent);
+
+        //recreate();
+
+        LoaderManager lm = getLoaderManager();
+        lm.restartLoader(LOADER_ID_PLAYER, null, this);
+        lm.restartLoader(LOADER_ID_INVESTIGATOR, null, this);
     }
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         mViewPager.setCurrentItem(tab.getPosition());
+        mPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -170,6 +204,8 @@ public class ViewPlayerActivity extends FragmentActivity
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        mViewPager.setCurrentItem(tab.getPosition());
+        mPagerAdapter.notifyDataSetChanged();
     }
 
     public void showChangeValuePopup(View v) {
@@ -190,15 +226,6 @@ public class ViewPlayerActivity extends FragmentActivity
                 return;
         }
         fragment.setArguments(args);
-
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        android.app.Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-//        if (prev != null) {
-//            ft.remove(prev);
-//        }
-//        ft.addToBackStack(null);
-
-        // Create and show the dialog.
         fragment.show(getFragmentManager(), "dialog");
     }
 
@@ -209,9 +236,11 @@ public class ViewPlayerActivity extends FragmentActivity
         CursorLoader loader = null;
         switch (id) {
             case LOADER_ID_PLAYER:
+                player = null;
                 loader = new CursorLoader(this, playerUri, null, null, null, null);
                 break;
             case LOADER_ID_INVESTIGATOR:
+                investigator = null;
                 ContentResolver resolver = getContentResolver();
                 Cursor tmp = resolver.query(playerUri, null, null, null, null);
                 tmp.moveToFirst();
@@ -243,14 +272,20 @@ public class ViewPlayerActivity extends FragmentActivity
                 break;
         }
 
-        if (player != null && investigator != null && mPagerAdapter == null) {
+        if (player != null && investigator != null) {
             final ActionBar actionBar = getActionBar();
-            mPagerAdapter = new ViewPlayerPagerAdapter(getSupportFragmentManager());
+            if (mPagerAdapter == null) {
+                mPagerAdapter = new ViewPlayerPagerAdapter(getSupportFragmentManager());
+            } else {
+                mPagerAdapter.notifyDataSetChanged();
+            }
             mViewPager = (ViewPager) findViewById(R.id.pager);
+            mViewPager.setOffscreenPageLimit(2);
             mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                 @Override
                 public void onPageSelected(int position) {
                     actionBar.setSelectedNavigationItem(position);
+                    selectedTab = position;
                 }
             });
 
@@ -261,17 +296,13 @@ public class ViewPlayerActivity extends FragmentActivity
                                 .setTabListener(this));
             }
             mViewPager.setAdapter(mPagerAdapter);
-            mViewPager.setCurrentItem(0);
-            actionBar.selectTab(actionBar.getTabAt(0));
+
+            mViewPager.setSaveEnabled(false);
+
+//            ((ViewPlayerFragment)mPagerAdapter.getItem(selectedTab));
+
+            actionBar.selectTab(actionBar.getTabAt(selectedTab));
         }
-        /*
-        if(mPagerAdapter != null) {
-            mPagerAdapter.notifyDataSetChanged();
-        }
-        if(mViewPager != null) {
-            mViewPager.invalidate();
-        }
-        */
     }
 
     @Override
@@ -295,19 +326,33 @@ public class ViewPlayerActivity extends FragmentActivity
         }
 
         @Override
+        public int getItemPosition(Object object) {
+//            if(player != null && investigator != null) {
+//                ((ViewPlayerFragment)object).update(player, investigator);
+//                return super.getItemPosition(object);
+//            } else {
+            return FragmentStatePagerAdapter.POSITION_NONE;
+//            }
+        }
+
+        @Override
         public Fragment getItem(int position) {
             Fragment frag = null;
             switch (position) {
                 case 0:
-                    frag = new ViewPlayerFragment1(investigator);
+                    frag = new ViewPlayerFragment1();
                     break;
                 case 1:
-                    frag = new ViewPlayerFragment2(investigator, player);
+                    frag = new ViewPlayerFragment2();
                     break;
                 case 2:
-                    frag = new ViewPlayerFragment3(investigator);
+                    frag = new ViewPlayerFragment3();
                     break;
             }
+            if (player != null && investigator != null) {
+                ((ViewPlayerFragment) (frag)).update(player, investigator);
+            }
+            frag.setRetainInstance(false);
             return frag;
         }
 

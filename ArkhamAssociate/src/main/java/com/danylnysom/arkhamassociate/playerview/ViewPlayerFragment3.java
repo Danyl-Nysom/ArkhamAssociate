@@ -11,21 +11,26 @@ import android.widget.TextView;
 import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.DBHelper;
 
-class ViewPlayerFragment3 extends Fragment {
-    private final Cursor investigator;
-
-    public ViewPlayerFragment3(Cursor investigator) {
-        this.investigator = investigator;
-    }
+public class ViewPlayerFragment3 extends Fragment implements ViewPlayerFragment {
+    private Cursor investigator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_player_3, null);
+        View rootView = getView();
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_player_3, null);
+        }
 
-        String story = investigator.getString(investigator.getColumnIndex(DBHelper.COL_STORY));
-
-        ((TextView) rootView.findViewById(R.id.story)).setText(story);
+        if (investigator != null) {
+            String story = investigator.getString(investigator.getColumnIndex(DBHelper.COL_STORY));
+            ((TextView) rootView.findViewById(R.id.story)).setText(story);
+        }
 
         return rootView;
+    }
+
+    @Override
+    public void update(Cursor player, Cursor investigator) {
+        this.investigator = investigator;
     }
 }
