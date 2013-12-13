@@ -22,7 +22,6 @@ public class ViewPlayerFragment1 extends Fragment implements ViewPlayerFragment 
         }
 
         if (investigator != null) {
-            System.err.println("start update 1");
             if (rootView == null) {
                 rootView = inflater.inflate(R.layout.fragment_player_1, null);
             }
@@ -37,10 +36,7 @@ public class ViewPlayerFragment1 extends Fragment implements ViewPlayerFragment 
             ((TextView) rootView.findViewById(R.id.ability)).setText(ability);
             ((TextView) rootView.findViewById(R.id.posFixed)).setText(posFixed);
             ((TextView) rootView.findViewById(R.id.posRandom)).setText(posRandom);
-
-            System.err.println("end update 1");
         }
-        System.err.println("finished 1");
         return rootView;
     }
 

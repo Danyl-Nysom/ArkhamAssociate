@@ -64,6 +64,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         inflater.inflate(R.menu.arkham_game_select, menu);
     }
 
@@ -88,7 +89,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
                         values.put(DBHelper.COL_CREATION, new Date().getTime());
                         resolver.insert(ArkhamProvider.GAMES_URI, values);
                     } else {
-                        Toast.makeText(context, "Name cannot be blank!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Please enter a name", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -129,7 +130,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
         }
 
         @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        public View newView(Context context, final Cursor cursor, ViewGroup parent) {
             final int gameId = cursor.getInt(cursor.getColumnIndex(DBHelper.COL_KEY));
             final String gameName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME));
             LinearLayout itemView = new LinearLayout(context);
@@ -151,11 +152,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
 
                 @Override
                 public void onClick(View v) {
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    ft.addToBackStack(null);
-                    ft.replace(R.id.container, PlayerSelectFragment.newInstance(gameId, gameName));
-                    ft.commit();
+                    openGame(gameId, gameName);
                 }
             });
 
@@ -177,13 +174,17 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
 
                 @Override
                 public void onClick(View v) {
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    ft.addToBackStack(null);
-                    ft.replace(R.id.container, PlayerSelectFragment.newInstance(gameId, gameName));
-                    ft.commit();
+                    openGame(gameId, gameName);
                 }
             });
         }
+    }
+
+    private void openGame(int gameId, String gameName) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.addToBackStack(null);
+        ft.replace(R.id.container, PlayerSelectFragment.newInstance(gameId, gameName));
+        ft.commit();
     }
 }

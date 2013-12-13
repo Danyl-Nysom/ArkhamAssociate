@@ -21,6 +21,11 @@ class ChangeValueFragment extends DialogFragment {
     public static final String GAME_KEY_ARG = "game";
 
     public static final String MONEY_ARG = "money";
+    public static final String CLUES_ARG = "clues";
+    public static final String SANITY_ARG = "sanity";
+    public static final String MAX_SANITY_ARG = "max_sanity";
+    public static final String STAMINA_ARG = "stamina";
+    public static final String MAX_STAMINA_ARG = "max_stamina";
 
     private ContentValues values;
     private String title;
@@ -41,6 +46,22 @@ class ChangeValueFragment extends DialogFragment {
         rootView.addView(money);
     }
 
+    private void createCluesView(LinearLayout rootView) {
+        title = "Clues";
+
+        NumberPicker clues = new NumberPicker(rootView.getContext());
+        clues.setMinValue(0);
+        clues.setMaxValue(100);
+        clues.setValue(getArguments().getInt(CLUES_ARG));
+        clues.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                values.put(DBHelper.COL_CLUES, newVal);
+            }
+        });
+        rootView.addView(clues);
+    }
+
     private void setValues() {
         ContentResolver resolver = getActivity().getContentResolver();
         Uri uri = ArkhamProvider.GAMES_URI.buildUpon()
@@ -58,6 +79,9 @@ class ChangeValueFragment extends DialogFragment {
         switch (getArguments().getInt(VIEW_ID_ARG)) {
             case R.id.money:
                 createMoneyView(rootView);
+                break;
+            case R.id.clues:
+                createCluesView(rootView);
                 break;
         }
 

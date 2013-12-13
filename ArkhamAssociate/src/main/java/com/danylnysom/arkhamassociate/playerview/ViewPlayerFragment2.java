@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -49,6 +48,11 @@ public class ViewPlayerFragment2 extends Fragment implements PlayerStats, ViewPl
             final int speed = stats >> SPEED_SHIFT & STAT_MASK;
             final int fight = stats >> FIGHT_SHIFT & STAT_MASK;
             final int lore = stats >> LORE_SHIFT & STAT_MASK;
+
+            final int curStamina = stats >> STAMINA_SHIFT & STAT_MASK;
+            final int curSanity = stats >> SANITY_SHIFT & STAT_MASK;
+            final int maxStamina = maxStats >> STAMINA_SHIFT & STAT_MASK;
+            final int maxSanity = maxStats >> SANITY_SHIFT & STAT_MASK;
 
             playerKey = player.getInt(player.getColumnIndex(DBHelper.COL_KEY));
             gameKey = player.getInt(player.getColumnIndex(DBHelper.COL_GAME));
@@ -157,41 +161,9 @@ public class ViewPlayerFragment2 extends Fragment implements PlayerStats, ViewPl
 
             Button money = (Button) rootView.findViewById(R.id.money);
             money.setText("$" + player.getInt(player.getColumnIndex(DBHelper.COL_MONEY)));
-                /*
-                NumberPicker money = (NumberPicker)rootView.findViewById(R.id.money);
-                money.setMinValue(0);
-                money.setMaxValue(100);
-                money.setValue(player.getInt(player.getColumnIndex(DBHelper.COL_MONEY)));
-                money.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                    @Override
-                    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                        ContentResolver resolver = getActivity().getContentResolver();
-                        ContentValues values = new ContentValues();
-                        values.put(DBHelper.COL_MONEY, newVal);
-                        Uri uri = ArkhamProvider.GAMES_URI.buildUpon()
-                                .appendPath(""+gameKey).appendPath("players").appendPath(""+playerKey)
-                                .build();
-                        resolver.update(uri,values, null, null);
-                    }
-                });
-                */
 
-            NumberPicker clues = (NumberPicker) rootView.findViewById(R.id.clues);
-            clues.setMinValue(0);
-            clues.setMaxValue(100);
-            clues.setValue(player.getInt(player.getColumnIndex(DBHelper.COL_CLUES)));
-            clues.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                @Override
-                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    ContentResolver resolver = getActivity().getContentResolver();
-                    ContentValues values = new ContentValues();
-                    values.put(DBHelper.COL_CLUES, newVal);
-                    Uri uri = ArkhamProvider.GAMES_URI.buildUpon()
-                            .appendPath("" + gameKey).appendPath("players").appendPath("" + playerKey)
-                            .build();
-                    resolver.update(uri, values, null, null);
-                }
-            });
+            Button clues = (Button) rootView.findViewById(R.id.clues);
+            clues.setText("" + player.getInt(player.getColumnIndex(DBHelper.COL_CLUES)));
 
             blessed = (CheckBox) rootView.findViewById(R.id.blessed);
             cursed = (CheckBox) rootView.findViewById(R.id.cursed);
@@ -210,6 +182,13 @@ public class ViewPlayerFragment2 extends Fragment implements PlayerStats, ViewPl
                     setBlessStatus((((CheckBox) v).isChecked()) ? 2 : 0);
                 }
             });
+
+
+            Button stamina = (Button) rootView.findViewById(R.id.stamina);
+            stamina.setText(curStamina + "/" + maxStamina);
+
+            Button sanity = (Button) rootView.findViewById(R.id.money);
+            sanity.setText(curSanity + "/" + maxSanity);
         }
         return rootView;
     }

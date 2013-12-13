@@ -222,6 +222,10 @@ public class ViewPlayerActivity extends FragmentActivity
                 args.putInt(ChangeValueFragment.MONEY_ARG,
                         player.getInt(player.getColumnIndex(DBHelper.COL_MONEY)));
                 break;
+            case R.id.clues:
+                args.putInt(ChangeValueFragment.CLUES_ARG,
+                        player.getInt(player.getColumnIndex(DBHelper.COL_CLUES)));
+                break;
             default:
                 return;
         }

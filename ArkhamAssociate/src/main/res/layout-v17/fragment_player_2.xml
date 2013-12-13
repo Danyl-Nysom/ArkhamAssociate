@@ -25,21 +25,23 @@
             android:text="Sanity"
             android:layout_alignParentEnd="true" />
 
-        <TextView
+        <Button
             android:layout_below="@id/staminaLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/stamina"
             android:layout_alignParentStart="true"
-            android:text="5/5" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:onClick="showChangeValuePopup" />
 
-        <TextView
+        <Button
             android:layout_below="@id/sanityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sanity"
             android:layout_alignParentEnd="true"
-            android:text="4/5" />
+            android:text="@string/loading"
+            android:onClick="showChangeValuePopup" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,27 +64,24 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1/1"
                 android:id="@+id/speed1" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2/2"
                 android:id="@+id/speed2"
                 android:layout_toEndOf="@id/speed1" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3/3"
                 android:id="@+id/speed3"
                 android:layout_toEndOf="@id/speed2" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4/4"
+                android:text="@string/loading"
                 android:id="@+id/speed4"
                 android:layout_toEndOf="@id/speed3" />
         </RadioGroup>
@@ -107,27 +106,24 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1/1"
                 android:id="@+id/fight1" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2/2"
                 android:id="@+id/fight2"
                 android:layout_toEndOf="@id/fight1" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3/3"
                 android:id="@+id/fight3"
                 android:layout_toEndOf="@id/fight2" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4/4"
+                android:text="@string/loading"
                 android:id="@+id/fight4"
                 android:layout_toEndOf="@id/fight3" />
         </RadioGroup>
@@ -152,27 +148,24 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1/1"
                 android:id="@+id/lore1" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2/2"
                 android:id="@+id/lore2"
                 android:layout_toEndOf="@id/lore1" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3/3"
                 android:id="@+id/lore3"
                 android:layout_toEndOf="@id/lore2" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4/4"
+                android:text="@string/loading"
                 android:id="@+id/lore4"
                 android:layout_toEndOf="@id/lore3" />
         </RadioGroup>
@@ -192,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/moneyLabel"
             android:id="@+id/money"
-            android:text="$0"
+            android:text="@string/loading"
             android:onClick="showChangeValuePopup" />
 
         <TextView
@@ -205,15 +198,14 @@
             android:id="@+id/clueLabel"
             android:text="Clue Tokens" />
 
-        <NumberPicker
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/clueLabel"
-            android:layout_alignParentEnd="true"
             android:id="@+id/clues"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false" />
+            android:text="@string/loading"
+            android:onClick="showChangeValuePopup"
+            android:layout_alignParentEnd="true" />
 
         <CheckBox
             android:layout_width="wrap_content"
