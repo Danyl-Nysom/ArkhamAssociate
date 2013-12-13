@@ -164,28 +164,25 @@ public class ViewPlayerActivity extends FragmentActivity
         stats ^= (sneak << SNEAK_SHIFT) + (will << WILL_SHIFT) + (luck << LUCK_SHIFT);
         stats |= (sneak - 3 << SNEAK_SHIFT) + (will - 3 << WILL_SHIFT) + (luck - 3 << LUCK_SHIFT);
 
+        int stamina = (stats >> STAMINA_SHIFT) & STAT_MASK;
+        int sanity = (stats >> SANITY_SHIFT) & STAT_MASK;
+
         values.put(DBHelper.COL_INVESTIGATOR, investigatorName);
         values.put(DBHelper.COL_STATS, stats);
         values.put(DBHelper.COL_CLUES, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_CLUES)));
         values.put(DBHelper.COL_MONEY, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_MONEY)));
         values.put(DBHelper.COL_BLESSED, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_BLESSED)));
 
+        values.put(DBHelper.COL_STAMINA, stamina);
+        values.put(DBHelper.COL_STAMINA_MAX, stamina);
+        values.put(DBHelper.COL_SANITY, sanity);
+        values.put(DBHelper.COL_SANITY_MAX, sanity);
+
         int key = getIntent().getIntExtra(ARG_KEY, -1);
         Uri playerUri = Uri.parse(getIntent().getStringExtra(ARG_URI) + "/" + key);
 
         resolver.update(playerUri, values, null, null);
         cursor.close();
-
-        // Restart the activity
-//        Intent intent = new Intent(this, ViewPlayerActivity.class);
-//        Bundle extras = getIntent().getExtras();
-//        extras.putInt(ARG_TAB, mViewPager.getCurrentItem());
-//        intent.putExtras(extras);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        finish();
-//        startActivity(intent);
-
-        //recreate();
 
         LoaderManager lm = getLoaderManager();
         lm.restartLoader(LOADER_ID_PLAYER, null, this);
@@ -225,6 +222,18 @@ public class ViewPlayerActivity extends FragmentActivity
             case R.id.clues:
                 args.putInt(ChangeValueFragment.CLUES_ARG,
                         player.getInt(player.getColumnIndex(DBHelper.COL_CLUES)));
+                break;
+            case R.id.stamina:
+                args.putInt(ChangeValueFragment.STAMINA_ARG,
+                        player.getInt(player.getColumnIndex(DBHelper.COL_STAMINA)));
+                args.putInt(ChangeValueFragment.MAX_STAMINA_ARG,
+                        player.getInt(player.getColumnIndex(DBHelper.COL_STAMINA_MAX)));
+                break;
+            case R.id.sanity:
+                args.putInt(ChangeValueFragment.SANITY_ARG,
+                        player.getInt(player.getColumnIndex(DBHelper.COL_SANITY)));
+                args.putInt(ChangeValueFragment.MAX_SANITY_ARG,
+                        player.getInt(player.getColumnIndex(DBHelper.COL_SANITY_MAX)));
                 break;
             default:
                 return;

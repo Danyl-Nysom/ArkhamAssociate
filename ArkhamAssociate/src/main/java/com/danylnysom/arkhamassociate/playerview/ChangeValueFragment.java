@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
@@ -62,6 +63,93 @@ class ChangeValueFragment extends DialogFragment {
         rootView.addView(clues);
     }
 
+    private void createSanityView(LinearLayout rootView) {
+        title = "Sanity";
+
+        final NumberPicker current = new NumberPicker(rootView.getContext());
+        current.setMinValue(0);
+        current.setMaxValue(10);
+        current.setValue(getArguments().getInt(SANITY_ARG));
+
+        final NumberPicker max = new NumberPicker(rootView.getContext());
+        max.setMinValue(0);
+        max.setMaxValue(10);
+        max.setValue(getArguments().getInt(MAX_SANITY_ARG));
+
+        current.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                values.put(DBHelper.COL_SANITY, newVal);
+                if (newVal > max.getValue()) {
+                    max.setValue(newVal);
+                    values.put(DBHelper.COL_SANITY_MAX, newVal);
+                }
+            }
+        });
+        max.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                values.put(DBHelper.COL_SANITY_MAX, newVal);
+                if (newVal < current.getValue()) {
+                    current.setValue(newVal);
+                    values.put(DBHelper.COL_SANITY, newVal);
+                }
+            }
+        });
+
+        TextView currentLabel = new TextView(rootView.getContext());
+        currentLabel.setText("Current: ");
+        TextView maxLabel = new TextView(rootView.getContext());
+        maxLabel.setText("Max: ");
+
+        rootView.addView(currentLabel);
+        rootView.addView(current);
+        rootView.addView(maxLabel);
+        rootView.addView(max);
+    }
+
+    private void createStaminaView(LinearLayout rootView) {
+        title = "Stamina";
+
+        final NumberPicker current = new NumberPicker(rootView.getContext());
+        current.setMinValue(0);
+        current.setMaxValue(10);
+        current.setValue(getArguments().getInt(STAMINA_ARG));
+
+        final NumberPicker max = new NumberPicker(rootView.getContext());
+        max.setMinValue(0);
+        max.setMaxValue(10);
+        max.setValue(getArguments().getInt(MAX_STAMINA_ARG));
+
+        current.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                values.put(DBHelper.COL_STAMINA, newVal);
+                if (newVal > max.getValue()) {
+                    max.setValue(newVal);
+                    values.put(DBHelper.COL_STAMINA_MAX, newVal);
+                }
+            }
+        });
+        max.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                values.put(DBHelper.COL_STAMINA_MAX, newVal);
+                if (newVal < current.getValue()) {
+                    current.setValue(newVal);
+                    values.put(DBHelper.COL_STAMINA, newVal);
+                }
+            }
+        });
+
+        TextView slash = new TextView(rootView.getContext());
+        slash.setText("/");
+
+        rootView.addView(current);
+        rootView.addView(slash);
+        rootView.addView(max);
+    }
+
     private void setValues() {
         ContentResolver resolver = getActivity().getContentResolver();
         Uri uri = ArkhamProvider.GAMES_URI.buildUpon()
@@ -82,6 +170,12 @@ class ChangeValueFragment extends DialogFragment {
                 break;
             case R.id.clues:
                 createCluesView(rootView);
+                break;
+            case R.id.stamina:
+                createStaminaView(rootView);
+                break;
+            case R.id.sanity:
+                createSanityView(rootView);
                 break;
         }
 

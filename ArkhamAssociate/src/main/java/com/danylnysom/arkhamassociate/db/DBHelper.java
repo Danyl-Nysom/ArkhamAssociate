@@ -28,6 +28,10 @@ public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
     public static final String COL_CLUES = "clues";
     public static final String COL_STORY = "story";
     public static final String COL_BLESSED = "blessed";
+    public static final String COL_SANITY = "sanity";
+    public static final String COL_STAMINA = "stamina";
+    public static final String COL_SANITY_MAX = "max_sanity";
+    public static final String COL_STAMINA_MAX = "max_stamina";
 
     private static final int VERSION = 1;
 
@@ -67,6 +71,10 @@ public class DBHelper extends SQLiteOpenHelper implements PlayerStats {
                 COL_MONEY + " INTEGER, " +
                 COL_CLUES + " INTEGER, " +
                 COL_BLESSED + " INTEGER, " +
+                COL_SANITY + " INTEGER, " +
+                COL_STAMINA + " INTEGER, " +
+                COL_SANITY_MAX + " INTEGER, " +
+                COL_STAMINA_MAX + " INTEGER, " +
                 "FOREIGN KEY(" + COL_GAME + ") REFERENCES " + GAME_TABLE + "(" + COL_KEY + ")," +
                 "FOREIGN KEY(" + COL_INVESTIGATOR + ") REFERENCES " + INVESTIGATOR_TABLE + "(" + COL_NAME + "));");
 

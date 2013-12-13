@@ -49,10 +49,10 @@ public class ViewPlayerFragment2 extends Fragment implements PlayerStats, ViewPl
             final int fight = stats >> FIGHT_SHIFT & STAT_MASK;
             final int lore = stats >> LORE_SHIFT & STAT_MASK;
 
-            final int curStamina = stats >> STAMINA_SHIFT & STAT_MASK;
-            final int curSanity = stats >> SANITY_SHIFT & STAT_MASK;
-            final int maxStamina = maxStats >> STAMINA_SHIFT & STAT_MASK;
-            final int maxSanity = maxStats >> SANITY_SHIFT & STAT_MASK;
+            final int curStamina = player.getInt(player.getColumnIndex(DBHelper.COL_STAMINA));
+            final int curSanity = player.getInt(player.getColumnIndex(DBHelper.COL_SANITY));
+            final int maxStamina = player.getInt(player.getColumnIndex(DBHelper.COL_STAMINA_MAX));
+            final int maxSanity = player.getInt(player.getColumnIndex(DBHelper.COL_SANITY_MAX));
 
             playerKey = player.getInt(player.getColumnIndex(DBHelper.COL_KEY));
             gameKey = player.getInt(player.getColumnIndex(DBHelper.COL_GAME));
@@ -187,7 +187,9 @@ public class ViewPlayerFragment2 extends Fragment implements PlayerStats, ViewPl
             Button stamina = (Button) rootView.findViewById(R.id.stamina);
             stamina.setText(curStamina + "/" + maxStamina);
 
-            Button sanity = (Button) rootView.findViewById(R.id.money);
+            money.setText("$" + player.getInt(player.getColumnIndex(DBHelper.COL_MONEY)));
+
+            Button sanity = (Button) rootView.findViewById(R.id.sanity);
             sanity.setText(curSanity + "/" + maxSanity);
         }
         return rootView;

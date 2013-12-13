@@ -94,11 +94,19 @@ class PlayerClickListener implements View.OnClickListener, PlayerStats {
         stats ^= (sneak << SNEAK_SHIFT) + (will << WILL_SHIFT) + (luck << LUCK_SHIFT);
         stats |= (sneak - 3 << SNEAK_SHIFT) + (will - 3 << WILL_SHIFT) + (luck - 3 << LUCK_SHIFT);
 
+        int stamina = (stats >> STAMINA_SHIFT) & STAT_MASK;
+        int sanity = (stats >> SANITY_SHIFT) & STAT_MASK;
+
         values.put(DBHelper.COL_INVESTIGATOR, investigatorName);
         values.put(DBHelper.COL_STATS, stats);
         values.put(DBHelper.COL_CLUES, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_CLUES)));
         values.put(DBHelper.COL_MONEY, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_MONEY)));
         values.put(DBHelper.COL_BLESSED, cursor.getInt(cursor.getColumnIndex(DBHelper.COL_BLESSED)));
+
+        values.put(DBHelper.COL_STAMINA, stamina);
+        values.put(DBHelper.COL_STAMINA_MAX, stamina);
+        values.put(DBHelper.COL_SANITY, sanity);
+        values.put(DBHelper.COL_SANITY_MAX, sanity);
 
         resolver.update(ContentUris.withAppendedId(playersUri, key), values, null, null);
         cursor.close();

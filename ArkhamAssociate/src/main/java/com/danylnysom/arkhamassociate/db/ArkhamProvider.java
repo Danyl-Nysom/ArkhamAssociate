@@ -190,45 +190,48 @@ public class ArkhamProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        SQLiteDatabase database = db.getWritableDatabase();
-        String table = null;
-        String whereClause = null;
-        String[] whereArgs = {""};
-        switch (uriMatcher.match(uri)) {
-            case GAMES:
-                table = DBHelper.GAME_TABLE;
-                whereClause = selection;
-                whereArgs = selectionArgs;
-                break;
-            case GAMES_ID:
-                table = DBHelper.GAME_TABLE;
-                whereClause = DBHelper.COL_KEY + " = ?";
-                whereArgs[0] = uri.getLastPathSegment();
-                break;
-            case PLAYERS:
-                table = DBHelper.PLAYER_TABLE;
-                whereClause = DBHelper.COL_GAME + " = ?";
-                whereArgs[0] = uri.getPathSegments().get(1);
-                break;
-            case PLAYERS_ID:
-                table = DBHelper.PLAYER_TABLE;
-                whereClause = DBHelper.COL_KEY + " = ?";
-                whereArgs[0] = uri.getLastPathSegment();
-                break;
-            case INVESTIGATORS:
-                table = DBHelper.INVESTIGATOR_TABLE;
-                whereClause = selection;
-                whereArgs = selectionArgs;
-                break;
-            case INVESTIGATORS_ID:
-                table = DBHelper.INVESTIGATOR_TABLE;
-                whereClause = DBHelper.COL_KEY + " = ?";
-                whereArgs[0] = uri.getLastPathSegment();
-                break;
+        if (values.size() > 0) {
+            SQLiteDatabase database = db.getWritableDatabase();
+            String table = null;
+            String whereClause = null;
+            String[] whereArgs = {""};
+            switch (uriMatcher.match(uri)) {
+                case GAMES:
+                    table = DBHelper.GAME_TABLE;
+                    whereClause = selection;
+                    whereArgs = selectionArgs;
+                    break;
+                case GAMES_ID:
+                    table = DBHelper.GAME_TABLE;
+                    whereClause = DBHelper.COL_KEY + " = ?";
+                    whereArgs[0] = uri.getLastPathSegment();
+                    break;
+                case PLAYERS:
+                    table = DBHelper.PLAYER_TABLE;
+                    whereClause = DBHelper.COL_GAME + " = ?";
+                    whereArgs[0] = uri.getPathSegments().get(1);
+                    break;
+                case PLAYERS_ID:
+                    table = DBHelper.PLAYER_TABLE;
+                    whereClause = DBHelper.COL_KEY + " = ?";
+                    whereArgs[0] = uri.getLastPathSegment();
+                    break;
+                case INVESTIGATORS:
+                    table = DBHelper.INVESTIGATOR_TABLE;
+                    whereClause = selection;
+                    whereArgs = selectionArgs;
+                    break;
+                case INVESTIGATORS_ID:
+                    table = DBHelper.INVESTIGATOR_TABLE;
+                    whereClause = DBHelper.COL_KEY + " = ?";
+                    whereArgs[0] = uri.getLastPathSegment();
+                    break;
+            }
+            int count = database.update(table, values, whereClause, whereArgs);
+            database.close();
+            getContext().getContentResolver().notifyChange(uri, null);
+            return count;
         }
-        int count = database.update(table, values, whereClause, whereArgs);
-        database.close();
-        getContext().getContentResolver().notifyChange(uri, null);
-        return count;
+        return 0;
     }
 }
