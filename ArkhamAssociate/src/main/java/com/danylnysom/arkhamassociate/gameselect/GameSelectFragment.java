@@ -155,7 +155,6 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
                     openGame(gameId, gameName);
                 }
             });
-
             return itemView;
         }
 

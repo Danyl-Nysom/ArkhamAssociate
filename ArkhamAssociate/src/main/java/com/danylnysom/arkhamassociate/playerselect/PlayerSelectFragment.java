@@ -79,29 +79,40 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_add) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-            final EditText input = new EditText(context);
-            input.setHint("Bob");
+        switch (id) {
+            case R.id.action_add:
+                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                final EditText input = new EditText(context);
+                input.setHint("Bob");
 
-            dialog.setTitle("Enter the players' name");
-            dialog.setView(input);
-            dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                dialog.setTitle("Enter the players' name");
+                dialog.setView(input);
+                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (input.length() > 0) {
-                        ContentResolver resolver = getActivity().getContentResolver();
-                        ContentValues values = new ContentValues();
-                        values.put(DBHelper.COL_NAME, input.getText().toString());
-                        values.put(DBHelper.COL_GAME, gameKey);
-                        resolver.insert(playersUri, values);
-                    } else {
-                        Toast.makeText(context, "Name cannot be blank!", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (input.length() > 0) {
+                            ContentResolver resolver = getActivity().getContentResolver();
+                            ContentValues values = new ContentValues();
+                            values.put(DBHelper.COL_NAME, input.getText().toString());
+                            values.put(DBHelper.COL_GAME, gameKey);
+                            resolver.insert(playersUri, values);
+                        } else {
+                            Toast.makeText(context, "Name cannot be blank!", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            });
-            dialog.show();
+                });
+                dialog.show();
+                break;
+            case R.id.action_remove:
+                ContentResolver resolver = getActivity().getContentResolver();
+                int playerCount = resolver.delete(playersUri, null, null);
+                System.err.println("Deleted " + playerCount + " players");
+                int gameCount = resolver.delete(ContentUris.withAppendedId(ArkhamProvider.GAMES_URI, gameKey),
+                        null, null);
+                System.err.println("Deleted " + gameCount + " games");
+                getActivity().getFragmentManager().popBackStack();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

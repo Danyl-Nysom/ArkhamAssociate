@@ -95,9 +95,17 @@ public class ViewPlayerActivity extends FragmentActivity
         switch (id) {
             case R.id.action_change_investigator:
                 showInvestigatorPicker();
-//                int key = getIntent().getIntExtra(ARG_KEY, -1);
-//                Uri uri = Uri.parse(getIntent().getStringExtra(ARG_URI) + "/" + key);
                 return true;
+            case R.id.action_remove:
+                ContentResolver resolver = getContentResolver();
+                int key = getIntent().getIntExtra(ARG_KEY, -1);
+                Uri playerUri = Uri.parse(getIntent().getStringExtra(ARG_URI) + "/" + key);
+                int playerCount = resolver.delete(playerUri, null, null);
+                LoaderManager lm = getLoaderManager();
+                lm.destroyLoader(LOADER_ID_INVESTIGATOR);
+                lm.destroyLoader(LOADER_ID_PLAYER);
+                finish();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -311,8 +319,6 @@ public class ViewPlayerActivity extends FragmentActivity
             mViewPager.setAdapter(mPagerAdapter);
 
             mViewPager.setSaveEnabled(false);
-
-//            ((ViewPlayerFragment)mPagerAdapter.getItem(selectedTab));
 
             actionBar.selectTab(actionBar.getTabAt(selectedTab));
         }

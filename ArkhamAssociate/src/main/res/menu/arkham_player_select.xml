@@ -5,4 +5,8 @@
         android:id="@+id/action_add"
         android:title="Add"
         android:showAsAction="withText|always" />
+    <item
+        android:id="@+id/action_remove"
+        android:title="Remove Game"
+        android:showAsAction="withText|always" />
 </menu>

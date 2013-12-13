@@ -5,4 +5,8 @@
         android:id="@+id/action_change_investigator"
         android:title="Change Investigator"
         android:showAsAction="withText|ifRoom" />
+    <item
+        android:id="@+id/action_remove"
+        android:title="Remove Player"
+        android:showAsAction="withText|always" />
 </menu>
