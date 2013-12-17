@@ -43,13 +43,14 @@ public class ArkhamMainActivity extends Activity
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
         FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
         switch (position) {
             case SECTION_PLAY:
-                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.addToBackStack("gameselect");
                 ft.replace(R.id.container, new GameSelectFragment());
-                ft.commit();
                 break;
         }
+        ft.commit();
     }
 
     public void onSectionAttached(int number) {

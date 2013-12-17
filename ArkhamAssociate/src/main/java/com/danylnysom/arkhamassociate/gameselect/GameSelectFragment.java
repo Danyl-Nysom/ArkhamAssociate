@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
 import com.danylnysom.arkhamassociate.db.DBHelper;
+import com.danylnysom.arkhamassociate.etc.Examples;
 import com.danylnysom.arkhamassociate.main.ArkhamMainActivity;
 import com.danylnysom.arkhamassociate.playerselect.PlayerSelectFragment;
 
@@ -74,7 +75,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
         if (id == R.id.action_add) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);
             final EditText input = new EditText(context);
-            input.setHint("Bob & I fight Cthulhu");
+            input.setHint(Examples.gameName());
 
             dialog.setTitle("Enter a name for the game");
             dialog.setView(input);

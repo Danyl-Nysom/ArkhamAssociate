@@ -45,6 +45,7 @@ public class ViewPlayerActivity extends FragmentActivity
     private ViewPlayerPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
 
+    private static final int DEFAULT_TAB = 1;
     private int selectedTab;
 
     @Override
@@ -53,7 +54,9 @@ public class ViewPlayerActivity extends FragmentActivity
         setContentView(R.layout.activity_view_player);
 
         if (savedInstanceState != null) {
-            selectedTab = savedInstanceState.getInt(ARG_TAB, 0);
+            selectedTab = savedInstanceState.getInt(ARG_TAB, DEFAULT_TAB);
+        } else {
+            selectedTab = DEFAULT_TAB;
         }
 
         LoaderManager.LoaderCallbacks<Cursor> mCallbacks = this;
@@ -80,7 +83,7 @@ public class ViewPlayerActivity extends FragmentActivity
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        selectedTab = savedInstanceState.getInt(ARG_TAB, 0);
+        selectedTab = savedInstanceState.getInt(ARG_TAB, DEFAULT_TAB);
     }
 
     @Override

@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
 import com.danylnysom.arkhamassociate.db.DBHelper;
+import com.danylnysom.arkhamassociate.etc.Examples;
 
 /**
  * A fragment displaying a list of players, allowing the user to select one. Upon selection, a
@@ -83,7 +84,7 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
             case R.id.action_add:
                 AlertDialog.Builder dialog = new AlertDialog.Builder(context);
                 final EditText input = new EditText(context);
-                input.setHint("Bob");
+                input.setHint(Examples.playerName());
 
                 dialog.setTitle("Enter the players' name");
                 dialog.setView(input);
