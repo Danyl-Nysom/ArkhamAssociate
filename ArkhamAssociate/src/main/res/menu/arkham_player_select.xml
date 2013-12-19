@@ -8,5 +8,5 @@
     <item
         android:id="@+id/action_remove"
         android:title="Remove Game"
-        android:showAsAction="withText|always" />
+        android:showAsAction="never" />
 </menu>

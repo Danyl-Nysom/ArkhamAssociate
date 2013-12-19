@@ -66,6 +66,7 @@ public class ViewPlayerActivity extends FragmentActivity
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
     }
 
     @Override

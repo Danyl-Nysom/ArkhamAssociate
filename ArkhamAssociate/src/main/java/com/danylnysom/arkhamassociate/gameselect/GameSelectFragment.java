@@ -45,7 +45,10 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
     private Context context = null;
 
     private static final int LOADER_ID = 1;
+    private static final String ARG_GAME = "game";
     private GameSelectAdapter mAdapter;
+
+    private int selectedGame;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +62,17 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
         LoaderManager lm = getLoaderManager();
         lm.initLoader(LOADER_ID, null, mCallbacks);
         setHasOptionsMenu(true);
+
+        if (savedInstanceState != null) {
+            selectedGame = savedInstanceState.getInt(ARG_GAME, -1);
+        }
+
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(ARG_GAME, selectedGame);
     }
 
     @Override
@@ -114,6 +127,17 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_ID:
+//                if(selectedGame >= 0) {
+//                    data.moveToFirst();
+//                    while(data.getInt(data.getColumnIndex(DBHelper.COL_KEY)) != selectedGame &&
+//                            !data.isLast()) {
+//                        data.moveToNext();
+//                    }
+//                    if(data.getInt(data.getColumnIndex(DBHelper.COL_KEY)) != selectedGame) {
+//                        String gameName = data.getString(data.getColumnIndex(DBHelper.COL_NAME));
+//                        openGame(selectedGame, gameName);
+//                    }
+//                }
                 mAdapter.swapCursor(data);
                 break;
         }
@@ -149,6 +173,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
             itemView.setOrientation(LinearLayout.VERTICAL);
             itemView.setMinimumHeight(200);
 
+            selectedGame = gameId;
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -170,6 +195,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
             mainText.setText(cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME)));
             subText.setText(new Date(cursor.getLong(cursor.getColumnIndex(DBHelper.COL_CREATION))).toString());
 
+            selectedGame = gameId;
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -183,7 +209,7 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
     private void openGame(int gameId, String gameName) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.addToBackStack(null);
+        ft.addToBackStack("playerselect");
         ft.replace(R.id.container, PlayerSelectFragment.newInstance(gameId, gameName));
         ft.commit();
     }
