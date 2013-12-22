@@ -1,6 +1,7 @@
 package com.danylnysom.arkhamassociate.playerview;
 
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,9 +22,17 @@ public class ViewPlayerFragment3 extends Fragment implements ViewPlayerFragment 
             rootView = inflater.inflate(R.layout.fragment_player_3, null);
         }
 
+        Typeface face = Typeface.createFromAsset(rootView.getContext().getAssets(),
+                "typeface.ttf");
+
+        TextView storyLabel = (TextView) rootView.findViewById(R.id.storyLabel);
+        storyLabel.setTypeface(face);
+
         if (investigator != null) {
             String story = investigator.getString(investigator.getColumnIndex(DBHelper.COL_STORY));
-            ((TextView) rootView.findViewById(R.id.story)).setText(story);
+            TextView storyView = (TextView) rootView.findViewById(R.id.story);
+            storyView.setText(story);
+            storyView.setTypeface(face);
         }
 
         return rootView;

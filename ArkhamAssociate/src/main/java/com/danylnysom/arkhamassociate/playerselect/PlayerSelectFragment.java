@@ -11,6 +11,7 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -145,6 +146,7 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            Typeface face = Typeface.createFromAsset(context.getAssets(), "typeface.ttf");
             LinearLayout itemView = new LinearLayout(context);
             itemView.setOrientation(LinearLayout.VERTICAL);
             itemView.setMinimumHeight(200);
@@ -156,6 +158,8 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
             TextView subText = new TextView(context);
             subText.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Small);
             itemView.addView(subText, 1);
+            mainText.setTypeface(face);
+            subText.setTypeface(face);
 
             bindView(itemView, context, cursor);
 
@@ -164,6 +168,7 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
+            Typeface face = Typeface.createFromAsset(context.getAssets(), "typeface.ttf");
             String playerName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME));
             String investigatorName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_INVESTIGATOR));
             LinearLayout itemView = (LinearLayout) view;
@@ -172,6 +177,8 @@ public class PlayerSelectFragment extends Fragment implements LoaderManager.Load
 
             mainText.setText(playerName);
             subText.setText(investigatorName);
+            mainText.setTypeface(face);
+            subText.setTypeface(face);
 
             itemView.setOnClickListener(new PlayerClickListener(
                     cursor.getInt(cursor.getColumnIndex(DBHelper.COL_KEY)), playersUri,

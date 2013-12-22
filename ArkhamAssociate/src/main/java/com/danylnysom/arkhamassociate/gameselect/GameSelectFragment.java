@@ -13,6 +13,7 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -156,11 +157,14 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
 
         @Override
         public View newView(Context context, final Cursor cursor, ViewGroup parent) {
+            Typeface face = Typeface.createFromAsset(context.getAssets(), "typeface.ttf");
             final int gameId = cursor.getInt(cursor.getColumnIndex(DBHelper.COL_KEY));
             final String gameName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME));
             LinearLayout itemView = new LinearLayout(context);
             TextView mainText = new TextView(context);
             TextView subText = new TextView(context);
+            mainText.setTypeface(face);
+            subText.setTypeface(face);
 
             mainText.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Large);
             mainText.setText(cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME)));
@@ -186,11 +190,14 @@ public class GameSelectFragment extends Fragment implements LoaderManager.Loader
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
+            Typeface face = Typeface.createFromAsset(context.getAssets(), "typeface.ttf");
             final int gameId = cursor.getInt(cursor.getColumnIndex(DBHelper.COL_KEY));
             final String gameName = cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME));
             LinearLayout itemView = (LinearLayout) view;
             TextView mainText = (TextView) itemView.getChildAt(0);
             TextView subText = (TextView) itemView.getChildAt(1);
+            mainText.setTypeface(face);
+            subText.setTypeface(face);
 
             mainText.setText(cursor.getString(cursor.getColumnIndex(DBHelper.COL_NAME)));
             subText.setText(new Date(cursor.getLong(cursor.getColumnIndex(DBHelper.COL_CREATION))).toString());

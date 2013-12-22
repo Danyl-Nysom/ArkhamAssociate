@@ -142,11 +142,14 @@ class ChangeValueFragment extends DialogFragment {
             }
         });
 
-        TextView slash = new TextView(rootView.getContext());
-        slash.setText("/");
+        TextView currentLabel = new TextView(rootView.getContext());
+        currentLabel.setText("Current: ");
+        TextView maxLabel = new TextView(rootView.getContext());
+        maxLabel.setText("Max: ");
 
+        rootView.addView(currentLabel);
         rootView.addView(current);
-        rootView.addView(slash);
+        rootView.addView(maxLabel);
         rootView.addView(max);
     }
 

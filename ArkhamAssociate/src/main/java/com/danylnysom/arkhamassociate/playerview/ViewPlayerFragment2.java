@@ -3,6 +3,7 @@ package com.danylnysom.arkhamassociate.playerview;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.danylnysom.arkhamassociate.R;
 import com.danylnysom.arkhamassociate.db.ArkhamProvider;
@@ -34,6 +34,9 @@ public class ViewPlayerFragment2 extends Fragment implements PlayerStats, ViewPl
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_player_2, null);
         }
+
+        Typeface face = Typeface.createFromAsset(rootView.getContext().getAssets(),
+                "typeface.ttf");
 
         if (investigator != null && player != null) {
             int maxStats = investigator.getInt(investigator.getColumnIndex(DBHelper.COL_STATS));
@@ -57,119 +60,73 @@ public class ViewPlayerFragment2 extends Fragment implements PlayerStats, ViewPl
             playerKey = player.getInt(player.getColumnIndex(DBHelper.COL_KEY));
             gameKey = player.getInt(player.getColumnIndex(DBHelper.COL_GAME));
 
-            RadioGroup speedGroup = (RadioGroup) rootView.findViewById(R.id.speedGroup);
-            ((RadioButton) (speedGroup.getChildAt(3 - maxSpeed + speed))).setChecked(true);
-            speedGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    int position = 0;
-                    switch (checkedId) {
-                        case R.id.speed1:
-                            position = 0;
-                            break;
-                        case R.id.speed2:
-                            position = 1;
-                            break;
-                        case R.id.speed3:
-                            position = 2;
-                            break;
-                        case R.id.speed4:
-                            position = 3;
-                            break;
-                    }
-                    int newSpeed = maxSpeed - 3 + position;
-                    int newStats = (stats ^ (speed << SPEED_SHIFT)) | (newSpeed << SPEED_SHIFT);
-                    ContentResolver resolver = getActivity().getContentResolver();
-                    ContentValues values = new ContentValues();
-                    values.put(DBHelper.COL_STATS, newStats);
-                    Uri uri = ArkhamProvider.GAMES_URI.buildUpon()
-                            .appendPath("" + gameKey).appendPath("players").appendPath("" + playerKey)
-                            .build();
-                    resolver.update(uri, values, null, null);
-                }
-            });
+            TextView speedLabel = (TextView) rootView.findViewById(R.id.speedLabel);
+            speedLabel.setText("Speed " + speed);
+            speedLabel.setTypeface(face);
+            TextView sneakLabel = (TextView) rootView.findViewById(R.id.sneakLabel);
+            sneakLabel.setText("Sneak " + (maxSneak - 3 + maxSpeed - speed));
+            sneakLabel.setTypeface(face);
+            Button speedUp = (Button) rootView.findViewById(R.id.speedUp);
+            Button sneakUp = (Button) rootView.findViewById(R.id.sneakUp);
 
-            RadioGroup fightGroup = (RadioGroup) rootView.findViewById(R.id.fightGroup);
-            ((RadioButton) (fightGroup.getChildAt(3 + fight - maxFight))).setChecked(true);
-            fightGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    int position = 0;
-                    switch (checkedId) {
-                        case R.id.fight1:
-                            position = 0;
-                            break;
-                        case R.id.fight2:
-                            position = 1;
-                            break;
-                        case R.id.fight3:
-                            position = 2;
-                            break;
-                        case R.id.fight4:
-                            position = 3;
-                            break;
-                    }
-                    int newFight = maxFight - 3 + position;
-                    int newStats = (stats ^ (fight << FIGHT_SHIFT)) | (newFight << FIGHT_SHIFT);
-                    ContentResolver resolver = getActivity().getContentResolver();
-                    ContentValues values = new ContentValues();
-                    values.put(DBHelper.COL_STATS, newStats);
-                    Uri uri = ArkhamProvider.GAMES_URI.buildUpon()
-                            .appendPath("" + gameKey).appendPath("players").appendPath("" + playerKey)
-                            .build();
-                    resolver.update(uri, values, null, null);
-                }
-            });
+            speedUp.setEnabled(speed < maxSpeed);
+            sneakUp.setEnabled(speed > maxSpeed - 3);
 
-            RadioGroup loreGroup = (RadioGroup) rootView.findViewById(R.id.loreGroup);
-            ((RadioButton) (loreGroup.getChildAt(3 - maxLore + lore))).setChecked(true);
-            loreGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    int position = 0;
-                    switch (checkedId) {
-                        case R.id.lore1:
-                            position = 0;
-                            break;
-                        case R.id.lore2:
-                            position = 1;
-                            break;
-                        case R.id.lore3:
-                            position = 2;
-                            break;
-                        case R.id.lore4:
-                            position = 3;
-                            break;
-                    }
-                    int newLore = maxLore - 3 + position;
-                    int newStats = (stats ^ (lore << LORE_SHIFT)) | (newLore << LORE_SHIFT);
-                    ContentResolver resolver = getActivity().getContentResolver();
-                    ContentValues values = new ContentValues();
-                    values.put(DBHelper.COL_STATS, newStats);
-                    Uri uri = ArkhamProvider.GAMES_URI.buildUpon()
-                            .appendPath("" + gameKey).appendPath("players").appendPath("" + playerKey)
-                            .build();
-                    resolver.update(uri, values, null, null);
-                }
-            });
+            speedUp.setOnClickListener(new StatSliderListener
+                    (speed, SPEED_SHIFT, stats, true, DBHelper.COL_STATS)
+            );
 
-            for (int i = 0; i < 4; i++) {
-                ((RadioButton) (speedGroup.getChildAt(i))).setText((maxSpeed - 3 + i) + ":" + (maxSneak - i));
-                ((RadioButton) (fightGroup.getChildAt(i))).setText((maxFight - 3 + i) + ":" + (maxWill - i));
-                ((RadioButton) (loreGroup.getChildAt(i))).setText((maxLore - 3 + i) + ":" + (maxLuck - i));
-            }
+            sneakUp.setOnClickListener(new StatSliderListener
+                    (speed, SPEED_SHIFT, stats, false, DBHelper.COL_STATS)
+            );
 
-            Button money = (Button) rootView.findViewById(R.id.money);
-            money.setText("$" + player.getInt(player.getColumnIndex(DBHelper.COL_MONEY)));
+            TextView fightLabel = (TextView) rootView.findViewById(R.id.fightLabel);
+            fightLabel.setText("Fight " + fight);
+            fightLabel.setTypeface(face);
+            TextView willLabel = (TextView) rootView.findViewById(R.id.willLabel);
+            willLabel.setText("Will " + (maxWill - 3 + maxFight - fight));
+            willLabel.setTypeface(face);
+            Button fightUp = (Button) rootView.findViewById(R.id.fightUp);
+            Button willUp = (Button) rootView.findViewById(R.id.willUp);
 
-            Button clues = (Button) rootView.findViewById(R.id.clues);
-            clues.setText("" + player.getInt(player.getColumnIndex(DBHelper.COL_CLUES)));
+            fightUp.setEnabled(fight < maxFight);
+            willUp.setEnabled(fight > maxFight - 3);
+
+            fightUp.setOnClickListener(new StatSliderListener
+                    (fight, FIGHT_SHIFT, stats, true, DBHelper.COL_STATS)
+            );
+
+            willUp.setOnClickListener(new StatSliderListener
+                    (fight, FIGHT_SHIFT, stats, false, DBHelper.COL_STATS)
+            );
+
+            TextView loreLabel = (TextView) rootView.findViewById(R.id.loreLabel);
+            loreLabel.setText("Lore " + lore);
+            loreLabel.setTypeface(face);
+            TextView luckLabel = (TextView) rootView.findViewById(R.id.luckLabel);
+            luckLabel.setText("Luck " + (maxLuck - 3 + maxLore - lore));
+            luckLabel.setTypeface(face);
+            Button loreUp = (Button) rootView.findViewById(R.id.loreUp);
+            Button luckUp = (Button) rootView.findViewById(R.id.luckUp);
+
+            loreUp.setEnabled(lore < maxLore);
+            luckUp.setEnabled(lore > maxLore - 3);
+
+            loreUp.setOnClickListener(new StatSliderListener
+                    (lore, LORE_SHIFT, stats, true, DBHelper.COL_STATS)
+            );
+
+            luckUp.setOnClickListener(new StatSliderListener
+                    (lore, LORE_SHIFT, stats, false, DBHelper.COL_STATS)
+            );
 
             blessed = (CheckBox) rootView.findViewById(R.id.blessed);
             cursed = (CheckBox) rootView.findViewById(R.id.cursed);
             int blessStatus = player.getInt(player.getColumnIndex(DBHelper.COL_BLESSED));
             blessed.setChecked(blessStatus == 1);
             cursed.setChecked(blessStatus == 2);
+            blessed.setTypeface(face);
+            cursed.setTypeface(face);
             blessed.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -183,14 +140,25 @@ public class ViewPlayerFragment2 extends Fragment implements PlayerStats, ViewPl
                 }
             });
 
+            TextView staminaLabel = (TextView) rootView.findViewById(R.id.staminaLabel);
+            staminaLabel.setText(curStamina + "/" + maxStamina);
+            staminaLabel.setTextAppearance(staminaLabel.getContext(), android.R.style.TextAppearance_Medium);
+            staminaLabel.setTypeface(face);
 
-            Button stamina = (Button) rootView.findViewById(R.id.stamina);
-            stamina.setText(curStamina + "/" + maxStamina);
+            TextView sanityLabel = (TextView) rootView.findViewById(R.id.sanityLabel);
+            sanityLabel.setText(curSanity + "/" + maxSanity);
+            sanityLabel.setTextAppearance(sanityLabel.getContext(), android.R.style.TextAppearance_Medium);
+            sanityLabel.setTypeface(face);
 
-            money.setText("$" + player.getInt(player.getColumnIndex(DBHelper.COL_MONEY)));
+            TextView moneyLabel = (TextView) rootView.findViewById(R.id.moneyLabel);
+            moneyLabel.setText("$" + player.getInt(player.getColumnIndex(DBHelper.COL_MONEY)));
+            moneyLabel.setTextAppearance(moneyLabel.getContext(), android.R.style.TextAppearance_Medium);
+            moneyLabel.setTypeface(face);
 
-            Button sanity = (Button) rootView.findViewById(R.id.sanity);
-            sanity.setText(curSanity + "/" + maxSanity);
+            TextView cluesLabel = (TextView) rootView.findViewById(R.id.cluesLabel);
+            cluesLabel.setText("" + player.getInt(player.getColumnIndex(DBHelper.COL_CLUES)));
+            cluesLabel.setTextAppearance(cluesLabel.getContext(), android.R.style.TextAppearance_Medium);
+            cluesLabel.setTypeface(face);
         }
         return rootView;
     }
@@ -212,5 +180,34 @@ public class ViewPlayerFragment2 extends Fragment implements PlayerStats, ViewPl
     public void update(Cursor player, Cursor investigator) {
         this.investigator = investigator;
         this.player = player;
+    }
+
+    private class StatSliderListener implements Button.OnClickListener {
+
+        private int oldValue;
+        private int shift, stats;
+        private boolean increment;
+        private String column;
+
+        public StatSliderListener(int oldValue, int shift, int stats, boolean increment, String column) {
+            this.oldValue = oldValue;
+            this.shift = shift;
+            this.stats = stats;
+            this.increment = increment;
+            this.column = column;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int newValue = (increment) ? oldValue +1 : oldValue -1;
+            int newStats = (stats ^ (oldValue << shift)) | (newValue << shift);
+            ContentResolver resolver = getActivity().getContentResolver();
+            ContentValues values = new ContentValues();
+            values.put(column, newStats);
+            Uri uri = ArkhamProvider.GAMES_URI.buildUpon()
+                    .appendPath("" + gameKey).appendPath("players").appendPath("" + playerKey)
+                    .build();
+            resolver.update(uri, values, null, null);
+        }
     }
 }

@@ -1,8 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo">
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/background_image</item>
+    </style>
+
+    <style name="statUpButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/stat_up</item>
+        <item name="android:background">#FF5577FF</item>
+    </style>
+
+    <style name="statDownButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/stat_down</item>
+        <item name="android:background">#FFFF1155</item>
     </style>
 
 </resources>

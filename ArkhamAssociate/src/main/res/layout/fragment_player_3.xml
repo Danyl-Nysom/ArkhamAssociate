@@ -12,8 +12,8 @@
             android:id="@+id/storyLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:text="The Story so Far:" />
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:text="The Story So Far:" />
 
         <TextView
             android:id="@+id/story"
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@id/storyLabel"
+            android:textAppearance="@android:style/TextAppearance.Medium"
             android:text="@string/loading" />
     </RelativeLayout>
 </ScrollView>
